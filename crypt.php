@@ -12,6 +12,7 @@ $GLOBALS['auth_key'] = 'uje8hj98du8jf097tcgy3';
 function specifyCrypt($string, $operation = 'DECODE')
 {
     if ($operation == 'DECODE') {
+        // 前32位是原数据的MD5值
         $stringMD5 = substr($string, 0, 32);
         $string = substr($string, 32);
         $string = base64_decode($string);
@@ -46,7 +47,8 @@ function specifyCrypt($string, $operation = 'DECODE')
         $result .= chr(ord($string[$i]) ^ ($box[$boxTempInd]));
     }
     if ($operation == 'DECODE') {
-        return $result;
+        // 数据完整性校验
+        return md5($result) == $stringMD5 ? $result : '';
     } else {
         return $stringMD5 . str_replace('=', '', base64_encode($result));
     }
