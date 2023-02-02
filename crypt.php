@@ -53,3 +53,23 @@ function specifyCrypt($string, $operation = 'DECODE')
         return $stringMD5 . str_replace('=', '', base64_encode($result));
     }
 }
+
+/**
+ * AES 加密
+ */
+function aes_encrypt($string)
+{
+    // 配置文件中的秘钥
+    $key = $GLOBALS['auth_key'];
+    return openssl_encrypt($string, 'aes-128-ecb', $key);
+}
+
+/**
+ * AES 解密
+ */
+function aes_decrypt($string)
+{
+    // 配置文件中的秘钥
+    $key = $GLOBALS['auth_key'];
+    return openssl_decrypt($string, 'aes-128-ecb', $key);
+}
